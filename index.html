@@ -9,14 +9,13 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
-background: linear-gradient(160deg, #1a1208 0%, #2c1f0e 40%, #1a1208 100%);
+background: #b8dff0;
 min-height: 100vh;
 display: flex;
 flex-direction: column;
 align-items: center;
 justify-content: center;
 font-family: ‘Georgia’, serif;
-color: #f0e6c8;
 overflow: hidden;
 }
 
@@ -24,19 +23,20 @@ overflow: hidden;
 font-size: 1.1rem;
 letter-spacing: 0.15em;
 text-transform: uppercase;
-color: #d4a842;
+color: #f0e6c8;
 margin-bottom: 10px;
 opacity: 0.9;
 }
 
 .subheading {
 font-size: 0.88rem;
-color: #b89a6a;
+color: #f0e6c8;
 margin-bottom: 48px;
 letter-spacing: 0.05em;
 text-align: center;
 padding: 0 24px;
 line-height: 1.7;
+opacity: 0.85;
 }
 
 .circle-container {
@@ -52,18 +52,18 @@ margin-bottom: 36px;
 .ring {
 position: absolute;
 border-radius: 50%;
-border: 1px solid rgba(212, 168, 66, 0.15);
+border: 1px solid rgba(240, 230, 200, 0.3);
 }
 .ring-1 { width: 240px; height: 240px; }
-.ring-2 { width: 195px; height: 195px; border-color: rgba(212, 168, 66, 0.1); }
-.ring-3 { width: 150px; height: 150px; border-color: rgba(212, 168, 66, 0.08); }
+.ring-2 { width: 195px; height: 195px; }
+.ring-3 { width: 150px; height: 150px; }
 
 .glow {
 position: absolute;
 width: 180px;
 height: 180px;
 border-radius: 50%;
-background: radial-gradient(circle, rgba(200,145,58,0.12), transparent 70%);
+background: radial-gradient(circle, rgba(200,145,58,0.2), transparent 70%);
 z-index: 1;
 }
 
@@ -73,15 +73,14 @@ height: 115px;
 border-radius: 50%;
 background: radial-gradient(circle at 35% 30%, #c8913a, #7a4e1e, #3d2108);
 box-shadow:
-0 0 50px rgba(200, 145, 58, 0.45),
-0 0 100px rgba(200, 145, 58, 0.15),
+0 0 50px rgba(200, 145, 58, 0.5),
+0 0 100px rgba(200, 145, 58, 0.2),
 inset 0 0 30px rgba(255, 220, 150, 0.08);
 display: flex;
 align-items: center;
 justify-content: center;
 position: relative;
 z-index: 2;
-transition: transform 0.1s linear, box-shadow 0.1s linear;
 }
 
 .circle-inner {
@@ -94,7 +93,7 @@ background: radial-gradient(circle at 40% 40%, rgba(255, 220, 150, 0.2), transpa
 .breath-label {
 font-size: 1.05rem;
 letter-spacing: 0.08em;
-color: #e8d5a8;
+color: #f0e6c8;
 margin-bottom: 8px;
 min-height: 30px;
 text-align: center;
@@ -105,12 +104,12 @@ transition: opacity 0.6s ease;
 
 .countdown {
 font-size: 2rem;
-color: #d4a842;
+color: #f0e6c8;
 letter-spacing: 0.05em;
 text-align: center;
 min-height: 48px;
 font-weight: 300;
-opacity: 0.9;
+opacity: 0.85;
 }
 
 canvas {
@@ -127,16 +126,6 @@ z-index: 1;
 display: flex;
 flex-direction: column;
 align-items: center;
-}
-
-body::before {
-content: ‘’;
-position: fixed;
-top: 0; left: 0; right: 0;
-height: 80px;
-background: linear-gradient(to bottom, rgba(26,18,8,0.8), transparent);
-z-index: 2;
-pointer-events: none;
 }
 </style>
 
@@ -164,7 +153,6 @@ pointer-events: none;
 </div>
 
 <script>
-  // Phases: label, duration in seconds, orb scale target
   var phases = [
     { label: 'Breathe in...', seconds: 6, scaleFrom: 1.0, scaleTo: 1.6 },
     { label: 'Hold gently...', seconds: 4, scaleFrom: 1.6, scaleTo: 1.6 },
@@ -172,42 +160,27 @@ pointer-events: none;
   ];
 
   var circle = document.getElementById('circle');
-  var glow = document.getElementById('glow');
   var breathLabel = document.getElementById('breathLabel');
   var countdown = document.getElementById('countdown');
 
   var currentPhase = 0;
-  var currentScale = 1.0;
-  var targetScale = 1.6;
-  var phaseSecondsLeft = phases[0].seconds;
-  var phaseProgress = 0; // 0 to 1
-  var lastTime = null;
   var phaseDuration = phases[0].seconds * 1000;
   var phaseElapsed = 0;
-  var transitioning = false;
+  var lastTime = null;
 
-  function lerp(a, b, t) {
-    return a + (b - a) * t;
-  }
-
-  function easeInOut(t) {
-    return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
-  }
+  function lerp(a, b, t) { return a + (b - a) * t; }
+  function easeInOut(t) { return t < 0.5 ? 2*t*t : -1+(4-2*t)*t; }
 
   function setPhase(index) {
     currentPhase = index;
     var phase = phases[index];
     phaseElapsed = 0;
     phaseDuration = phase.seconds * 1000;
-    phaseSecondsLeft = phase.seconds;
-
-    // Fade label out then in
     breathLabel.style.opacity = '0';
     setTimeout(function() {
       breathLabel.textContent = phase.label;
       breathLabel.style.opacity = '1';
     }, 800);
-
     countdown.textContent = phase.seconds;
   }
 
@@ -215,30 +188,20 @@ pointer-events: none;
     if (!lastTime) lastTime = timestamp;
     var delta = timestamp - lastTime;
     lastTime = timestamp;
-
     phaseElapsed += delta;
 
     var phase = phases[currentPhase];
     var progress = Math.min(phaseElapsed / phaseDuration, 1);
     var eased = easeInOut(progress);
-
-    // Scale orb
     var scale = lerp(phase.scaleFrom, phase.scaleTo, eased);
     circle.style.transform = 'scale(' + scale + ')';
 
-    // Glow follows
-    var glowScale = lerp(1, 1.8, eased * (phase.scaleTo > phase.scaleFrom ? eased : 1 - eased + (phase.scaleFrom === phase.scaleTo ? 0.5 : 0)));
-    if (phase.scaleFrom === phase.scaleTo) glowScale = 1.8; // hold phase
-    glow.style.transform = 'scale(' + glowScale + ')';
-
-    // Countdown
     var secsLeft = Math.ceil((phaseDuration - phaseElapsed) / 1000);
     if (secsLeft < 1) secsLeft = 1;
     if (secsLeft !== parseInt(countdown.textContent)) {
       countdown.textContent = secsLeft;
     }
 
-    // Next phase
     if (phaseElapsed >= phaseDuration) {
       setPhase((currentPhase + 1) % phases.length);
     }
@@ -246,12 +209,10 @@ pointer-events: none;
     requestAnimationFrame(animate);
   }
 
-  // Initialise first phase display
   breathLabel.textContent = phases[0].label;
   countdown.textContent = phases[0].seconds;
   requestAnimationFrame(animate);
 
-  // Particles
   var canvas = document.getElementById('particles');
   var ctx = canvas.getContext('2d');
 
@@ -268,8 +229,8 @@ pointer-events: none;
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height,
       size: Math.random() * 1.8 + 0.4,
-      speed: Math.random() * 0.35 + 0.08,
-      opacity: Math.random() * 0.35 + 0.08,
+      speed: Math.random() * 0.3 + 0.08,
+      opacity: Math.random() * 0.25 + 0.08,
       drift: (Math.random() - 0.5) * 0.3
     });
   }
@@ -280,7 +241,7 @@ pointer-events: none;
       var p = particles[i];
       ctx.beginPath();
       ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(212, 168, 66, ' + p.opacity + ')';
+      ctx.fillStyle = 'rgba(240, 230, 200, ' + p.opacity + ')';
       ctx.fill();
       p.y -= p.speed;
       p.x += p.drift;
