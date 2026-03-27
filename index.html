@@ -4,12 +4,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light only">
 <title>Before We Begin</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
+html { color-scheme: light only; }
+
 body {
-background: #b8dff0;
+background-color: #b8dff0 !important;
 min-height: 100vh;
 display: flex;
 flex-direction: column;
@@ -23,20 +26,18 @@ overflow: hidden;
 font-size: 1.1rem;
 letter-spacing: 0.15em;
 text-transform: uppercase;
-color: #f0e6c8;
+color: #1a3a4a;
 margin-bottom: 10px;
-opacity: 0.9;
 }
 
 .subheading {
 font-size: 0.88rem;
-color: #f0e6c8;
+color: #1a3a4a;
 margin-bottom: 48px;
 letter-spacing: 0.05em;
 text-align: center;
 padding: 0 24px;
 line-height: 1.7;
-opacity: 0.85;
 }
 
 .circle-container {
@@ -52,7 +53,7 @@ margin-bottom: 36px;
 .ring {
 position: absolute;
 border-radius: 50%;
-border: 1px solid rgba(240, 230, 200, 0.3);
+border: 1px solid rgba(26, 58, 74, 0.25);
 }
 .ring-1 { width: 240px; height: 240px; }
 .ring-2 { width: 195px; height: 195px; }
@@ -63,7 +64,7 @@ position: absolute;
 width: 180px;
 height: 180px;
 border-radius: 50%;
-background: radial-gradient(circle, rgba(200,145,58,0.2), transparent 70%);
+background: radial-gradient(circle, rgba(245, 243, 210, 0.4), transparent 70%);
 z-index: 1;
 }
 
@@ -71,29 +72,19 @@ z-index: 1;
 width: 115px;
 height: 115px;
 border-radius: 50%;
-background: radial-gradient(circle at 35% 30%, #c8913a, #7a4e1e, #3d2108);
+background: radial-gradient(circle at 35% 30%, #fdfbe8, #f5f0b0, #e8e080);
 box-shadow:
-0 0 50px rgba(200, 145, 58, 0.5),
-0 0 100px rgba(200, 145, 58, 0.2),
-inset 0 0 30px rgba(255, 220, 150, 0.08);
-display: flex;
-align-items: center;
-justify-content: center;
+0 0 50px rgba(245, 243, 210, 0.5),
+0 0 100px rgba(245, 243, 210, 0.2),
+inset 0 0 30px rgba(255, 255, 230, 0.15);
 position: relative;
 z-index: 2;
-}
-
-.circle-inner {
-width: 55px;
-height: 55px;
-border-radius: 50%;
-background: radial-gradient(circle at 40% 40%, rgba(255, 220, 150, 0.2), transparent);
 }
 
 .breath-label {
 font-size: 1.05rem;
 letter-spacing: 0.08em;
-color: #f0e6c8;
+color: #1a3a4a;
 margin-bottom: 8px;
 min-height: 30px;
 text-align: center;
@@ -104,37 +95,17 @@ transition: opacity 0.6s ease;
 
 .countdown {
 font-size: 2rem;
-color: #f0e6c8;
-letter-spacing: 0.05em;
+color: #1a3a4a;
 text-align: center;
 min-height: 48px;
 font-weight: 300;
-opacity: 0.85;
-}
-
-canvas {
-position: fixed;
-top: 0; left: 0;
-width: 100%; height: 100%;
-pointer-events: none;
-z-index: 0;
-}
-
-.content {
-position: relative;
-z-index: 1;
-display: flex;
-flex-direction: column;
-align-items: center;
 }
 </style>
 
 </head>
-<body>
+<body style="background-color: #b8dff0 !important;">
 
-<canvas id="particles"></canvas>
-
-<div class="content">
+<div style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;">
   <p class="heading">Before we begin</p>
   <p class="subheading">Let's settle your nervous system.<br>One breath together.</p>
 
@@ -142,10 +113,8 @@ align-items: center;
     <div class="ring ring-1"></div>
     <div class="ring ring-2"></div>
     <div class="ring ring-3"></div>
-    <div class="glow" id="glow"></div>
-    <div class="circle" id="circle">
-      <div class="circle-inner"></div>
-    </div>
+    <div class="glow"></div>
+    <div class="circle" id="circle"></div>
   </div>
 
   <p class="breath-label" id="breathLabel">Breathe in...</p>
@@ -162,7 +131,6 @@ align-items: center;
   var circle = document.getElementById('circle');
   var breathLabel = document.getElementById('breathLabel');
   var countdown = document.getElementById('countdown');
-
   var currentPhase = 0;
   var phaseDuration = phases[0].seconds * 1000;
   var phaseElapsed = 0;
@@ -192,8 +160,7 @@ align-items: center;
 
     var phase = phases[currentPhase];
     var progress = Math.min(phaseElapsed / phaseDuration, 1);
-    var eased = easeInOut(progress);
-    var scale = lerp(phase.scaleFrom, phase.scaleTo, eased);
+    var scale = lerp(phase.scaleFrom, phase.scaleTo, easeInOut(progress));
     circle.style.transform = 'scale(' + scale + ')';
 
     var secsLeft = Math.ceil((phaseDuration - phaseElapsed) / 1000);
@@ -212,47 +179,6 @@ align-items: center;
   breathLabel.textContent = phases[0].label;
   countdown.textContent = phases[0].seconds;
   requestAnimationFrame(animate);
-
-  var canvas = document.getElementById('particles');
-  var ctx = canvas.getContext('2d');
-
-  function resize() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  }
-  resize();
-  window.addEventListener('resize', resize);
-
-  var particles = [];
-  for (var i = 0; i < 35; i++) {
-    particles.push({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      size: Math.random() * 1.8 + 0.4,
-      speed: Math.random() * 0.3 + 0.08,
-      opacity: Math.random() * 0.25 + 0.08,
-      drift: (Math.random() - 0.5) * 0.3
-    });
-  }
-
-  function drawParticles() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    for (var i = 0; i < particles.length; i++) {
-      var p = particles[i];
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(240, 230, 200, ' + p.opacity + ')';
-      ctx.fill();
-      p.y -= p.speed;
-      p.x += p.drift;
-      if (p.y < -5) {
-        p.y = canvas.height + 5;
-        p.x = Math.random() * canvas.width;
-      }
-    }
-    requestAnimationFrame(drawParticles);
-  }
-  drawParticles();
 </script>
 
 </body>
