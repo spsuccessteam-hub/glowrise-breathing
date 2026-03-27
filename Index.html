@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Before We Begin</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+background: linear-gradient(160deg, #1a1208 0%, #2c1f0e 40%, #1a1208 100%);
+min-height: 100vh;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+font-family: ‘Georgia’, serif;
+color: #f0e6c8;
+overflow: hidden;
+}
+
+.heading {
+font-size: 1.1rem;
+letter-spacing: 0.15em;
+text-transform: uppercase;
+color: #d4a842;
+margin-bottom: 10px;
+opacity: 0.9;
+}
+
+.subheading {
+font-size: 0.88rem;
+color: #b89a6a;
+margin-bottom: 52px;
+letter-spacing: 0.05em;
+text-align: center;
+padding: 0 24px;
+line-height: 1.7;
+}
+
+.circle-container {
+position: relative;
+width: 240px;
+height: 240px;
+display: flex;
+align-items: center;
+justify-content: center;
+margin-bottom: 44px;
+}
+
+.ring {
+position: absolute;
+border-radius: 50%;
+border: 1px solid rgba(212, 168, 66, 0.15);
+}
+
+.ring-1 { width: 240px; height: 240px; }
+.ring-2 { width: 195px; height: 195px; border-color: rgba(212, 168, 66, 0.1); }
+.ring-3 { width: 150px; height: 150px; border-color: rgba(212, 168, 66, 0.08); }
+
+.circle {
+width: 115px;
+height: 115px;
+border-radius: 50%;
+background: radial-gradient(circle at 35% 30%, #c8913a, #7a4e1e, #3d2108);
+box-shadow:
+0 0 50px rgba(200, 145, 58, 0.45),
+0 0 100px rgba(200, 145, 58, 0.15),
+inset 0 0 30px rgba(255, 220, 150, 0.08);
+display: flex;
+align-items: center;
+justify-content: center;
+animation: breathe 8s ease-in-out infinite;
+position: relative;
+z-index: 2;
+}
+
+.circle-inner {
+width: 55px;
+height: 55px;
+border-radius: 50%;
+background: radial-gradient(circle at 40% 40%, rgba(255, 220, 150, 0.2), transparent);
+}
+
+@keyframes breathe {
+0%   { transform: scale(1);    box-shadow: 0 0 50px rgba(200,145,58,0.45), 0 0 100px rgba(200,145,58,0.15); }
+45%  { transform: scale(1.6);  box-shadow: 0 0 80px rgba(200,145,58,0.65), 0 0 150px rgba(200,145,58,0.25); }
+50%  { transform: scale(1.6);  box-shadow: 0 0 80px rgba(200,145,58,0.65), 0 0 150px rgba(200,145,58,0.25); }
+95%  { transform: scale(1);    box-shadow: 0 0 50px rgba(200,145,58,0.45), 0 0 100px rgba(200,145,58,0.15); }
+100% { transform: scale(1);    box-shadow: 0 0 50px rgba(200,145,58,0.45), 0 0 100px rgba(200,145,58,0.15); }
+}
+
+.breath-text {
+font-size: 1.05rem;
+letter-spacing: 0.08em;
+color: #e8d5a8;
+margin-bottom: 10px;
+min-height: 30px;
+text-align: center;
+font-style: italic;
+}
+
+.counter {
+font-size: 0.75rem;
+color: #d4a842;
+letter-spacing: 0.2em;
+margin-bottom: 52px;
+min-height: 20px;
+text-transform: uppercase;
+}
+
+.ready-btn {
+background: transparent;
+border: 1px solid rgba(212, 168, 66, 0.45);
+color: #d4a842;
+padding: 15px 44px;
+border-radius: 40px;
+font-size: 0.9rem;
+letter-spacing: 0.12em;
+cursor: pointer;
+transition: all 0.4s ease;
+font-family: ‘Georgia’, serif;
+opacity: 0;
+animation: showBtn 1s ease forwards 10s;
+}
+
+.ready-btn:hover {
+background: rgba(212, 168, 66, 0.08);
+border-color: #d4a842;
+box-shadow: 0 0 24px rgba(212, 168, 66, 0.2);
+}
+
+@keyframes showBtn {
+to { opacity: 1; }
+}
+
+/* Warm glow behind circle */
+.glow {
+position: absolute;
+width: 180px;
+height: 180px;
+border-radius: 50%;
+background: radial-gradient(circle, rgba(200,145,58,0.12), transparent 70%);
+animation: glowPulse 8s ease-in-out infinite;
+z-index: 1;
+}
+
+@keyframes glowPulse {
+0%, 100% { transform: scale(1); opacity: 0.6; }
+50%       { transform: scale(1.8); opacity: 1; }
+}
+
+canvas {
+position: fixed;
+top: 0; left: 0;
+width: 100%; height: 100%;
+pointer-events: none;
+z-index: 0;
+}
+
+.content {
+position: relative;
+z-index: 1;
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+
+/* Subtle top fade */
+body::before {
+content: ‘’;
+position: fixed;
+top: 0; left: 0; right: 0;
+height: 80px;
+background: linear-gradient(to bottom, rgba(26,18,8,0.8), transparent);
+z-index: 2;
+pointer-events: none;
+}
+</style>
+
+</head>
+<body>
+
+<canvas id="particles"></canvas>
+
+<div class="content">
+  <p class="heading">Before we begin</p>
+  <p class="subheading">Let's settle your nervous system.<br>One breath together.</p>
+
+  <div class="circle-container">
+    <div class="ring ring-1"></div>
+    <div class="ring ring-2"></div>
+    <div class="ring ring-3"></div>
+    <div class="glow"></div>
+    <div class="circle">
+      <div class="circle-inner"></div>
+    </div>
+  </div>
+
+  <p class="breath-text" id="breathText">Breathe in...</p>
+  <p class="counter" id="counter">&nbsp;</p>
+
+<button class="ready-btn" onclick="handleReady()">I’m ready ✨</button>
+
+</div>
+
+<script>
+  // Breathing phases synced to 8s animation
+  const phases = [
+    { text: 'Breathe in...', duration: 4000 },
+    { text: 'Hold gently...', duration: 1000 },
+    { text: 'Breathe out...', duration: 3000 },
+  ];
+
+  let phaseIndex = 0;
+  const breathText = document.getElementById('breathText');
+
+  function cyclePhase() {
+    const phase = phases[phaseIndex];
+    breathText.style.opacity = '0';
+    setTimeout(() => {
+      breathText.textContent = phase.text;
+      breathText.style.transition = 'opacity 0.6s';
+      breathText.style.opacity = '1';
+    }, 300);
+    phaseIndex = (phaseIndex + 1) % phases.length;
+    setTimeout(cyclePhase, phase.duration);
+  }
+  cyclePhase();
+
+  // Floating warm particles
+  const canvas = document.getElementById('particles');
+  const ctx = canvas.getContext('2d');
+
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const particles = Array.from({ length: 35 }, () => ({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    size: Math.random() * 1.8 + 0.4,
+    speed: Math.random() * 0.35 + 0.08,
+    opacity: Math.random() * 0.35 + 0.08,
+    drift: (Math.random() - 0.5) * 0.3
+  }));
+
+  function drawParticles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(212, 168, 66, ${p.opacity})`;
+      ctx.fill();
+      p.y -= p.speed;
+      p.x += p.drift;
+      if (p.y < -5) {
+        p.y = canvas.height + 5;
+        p.x = Math.random() * canvas.width;
+      }
+    });
+    requestAnimationFrame(drawParticles);
+  }
+  drawParticles();
+
+  function handleReady() {
+    document.body.style.transition = 'opacity 0.8s ease';
+    document.body.style.opacity = '0';
+  }
+</script>
+
+</body>
+</html>
