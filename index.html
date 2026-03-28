@@ -2,182 +2,152 @@
 
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="color-scheme" content="light only">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
 <title>A Moment for You</title>
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-html { color-scheme: light only; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
-background-color: #b8dff0 !important;
-min-height: auto;
+background-color: #c8dce8;
+font-family: Georgia, ‘Times New Roman’, serif;
+display: flex;
+align-items: flex-start;
+justify-content: center;
+min-height: 100vh;
+overflow: hidden;
+}
+
+.wrapper {
 display: flex;
 flex-direction: column;
 align-items: center;
 justify-content: center;
-font-family: ‘Georgia’, serif;
-overflow: hidden;
+width: 100%;
+max-height: 56vh;
+padding: 20px 20px 10px;
+gap: 0;
 }
 
 .heading {
-font-size: 1.1rem;
-letter-spacing: 0.15em;
+font-size: clamp(0.7rem, 2.5vw, 0.85rem);
+letter-spacing: 0.25em;
+color: #3a5265;
 text-transform: uppercase;
-color: #1a3a4a;
-margin-bottom: 10px;
-}
-
-.subheading {
-font-size: 0.88rem;
-color: #1a3a4a;
-margin-bottom: 48px;
-letter-spacing: 0.05em;
+margin-bottom: 6px;
 text-align: center;
-padding: 0 24px;
-line-height: 1.7;
 }
 
-.circle-container {
+.subtitle {
+font-size: clamp(0.7rem, 2vw, 0.8rem);
+color: #4a6578;
+letter-spacing: 0.08em;
+text-align: center;
+line-height: 1.6;
+margin-bottom: 14px;
+}
+
+.orb-container {
 position: relative;
-width: 240px;
-height: 240px;
+width: 160px;
+height: 160px;
 display: flex;
 align-items: center;
 justify-content: center;
-margin-bottom: 36px;
+margin-bottom: 14px;
+animation: breathe 10s ease-in-out infinite;
 }
 
 .ring {
 position: absolute;
 border-radius: 50%;
-border: 1px solid rgba(26, 58, 74, 0.25);
+border: 1px solid rgba(100, 140, 165, 0.3);
 }
-.ring-1 { width: 240px; height: 240px; }
-.ring-2 { width: 195px; height: 195px; }
-.ring-3 { width: 150px; height: 150px; }
+.ring-1 { width: 160px; height: 160px; }
+.ring-2 { width: 130px; height: 130px; }
 
-.glow {
-position: absolute;
-width: 180px;
-height: 180px;
+.orb {
+width: 100px;
+height: 100px;
 border-radius: 50%;
-background: radial-gradient(circle, rgba(245, 243, 210, 0.4), transparent 70%);
+background: radial-gradient(circle at 38% 32%, #fefbe8, #f5eea0, #e8d96a);
+box-shadow:
+0 0 25px rgba(232, 217, 106, 0.35),
+0 0 50px rgba(232, 217, 106, 0.15);
+position: relative;
 z-index: 1;
 }
 
-.circle {
-width: 115px;
-height: 115px;
-border-radius: 50%;
-background: radial-gradient(circle at 35% 30%, #fdfbe8, #f5f0b0, #e8e080);
-box-shadow:
-0 0 50px rgba(245, 243, 210, 0.5),
-0 0 100px rgba(245, 243, 210, 0.2),
-inset 0 0 30px rgba(255, 255, 230, 0.15);
-position: relative;
-z-index: 2;
+@keyframes breathe {
+0%   { transform: scale(0.88); }
+40%  { transform: scale(1.12); }
+50%  { transform: scale(1.12); }
+90%  { transform: scale(0.88); }
+100% { transform: scale(0.88); }
 }
 
-.breath-label {
-font-size: 1.05rem;
-letter-spacing: 0.08em;
-color: #1a3a4a;
-margin-bottom: 8px;
-min-height: 30px;
-text-align: center;
+.phase {
 font-style: italic;
-opacity: 1;
-transition: opacity 0.6s ease;
+font-size: clamp(0.9rem, 3vw, 1.05rem);
+color: #3a5265;
+letter-spacing: 0.05em;
+text-align: center;
+min-height: 1.4rem;
+margin-bottom: 6px;
 }
 
 .countdown {
-font-size: 2rem;
-color: #1a3a4a;
-text-align: center;
-min-height: 48px;
+font-size: clamp(1.8rem, 6vw, 2.2rem);
 font-weight: 300;
+color: #3a5265;
+text-align: center;
+font-family: Georgia, serif;
+min-height: 2.6rem;
 }
 </style>
 
 </head>
 <body>
-
-<div style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;">
-  <p class="heading">A moment for you</p>
-  <p class="subheading">Let's settle your nervous system.<br>One breath together.</p>
-
-  <div class="circle-container">
+<div class="wrapper">
+  <div class="heading">A Moment for You</div>
+  <div class="subtitle">
+    Let's settle your nervous system.<br>
+    One breath together.
+  </div>
+  <div class="orb-container">
     <div class="ring ring-1"></div>
     <div class="ring ring-2"></div>
-    <div class="ring ring-3"></div>
-    <div class="glow"></div>
-    <div class="circle" id="circle"></div>
+    <div class="orb"></div>
   </div>
-
-  <p class="breath-label" id="breathLabel">Breathe in...</p>
-  <p class="countdown" id="countdown">6</p>
+  <div class="phase" id="phase">Breathe in...</div>
+  <div class="countdown" id="countdown">6</div>
 </div>
 
 <script>
-  var phases = [
-    { label: 'Breathe in...', seconds: 6, scaleFrom: 1.0, scaleTo: 1.6 },
-    { label: 'Hold gently...', seconds: 4, scaleFrom: 1.6, scaleTo: 1.6 },
-    { label: 'Breathe out...', seconds: 6, scaleFrom: 1.6, scaleTo: 1.0 }
+  const phases = [
+    { label: 'Breathe in...',  duration: 6 },
+    { label: 'Hold...',        duration: 4 },
+    { label: 'Breathe out...', duration: 6 },
   ];
 
-  var circle = document.getElementById('circle');
-  var breathLabel = document.getElementById('breathLabel');
-  var countdown = document.getElementById('countdown');
-  var currentPhase = 0;
-  var phaseDuration = phases[0].seconds * 1000;
-  var phaseElapsed = 0;
-  var lastTime = null;
+  let phaseIndex = 0;
+  let count = phases[0].duration;
 
-  function lerp(a, b, t) { return a + (b - a) * t; }
-  function easeInOut(t) { return t < 0.5 ? 2*t*t : -1+(4-2*t)*t; }
+  const phaseEl = document.getElementById('phase');
+  const countEl = document.getElementById('countdown');
 
-  function setPhase(index) {
-    currentPhase = index;
-    var phase = phases[index];
-    phaseElapsed = 0;
-    phaseDuration = phase.seconds * 1000;
-    breathLabel.style.opacity = '0';
-    setTimeout(function() {
-      breathLabel.textContent = phase.label;
-      breathLabel.style.opacity = '1';
-    }, 800);
-    countdown.textContent = phase.seconds;
+  function tick() {
+    phaseEl.textContent = phases[phaseIndex].label;
+    countEl.textContent = count;
+    count--;
+    if (count < 0) {
+      phaseIndex = (phaseIndex + 1) % phases.length;
+      count = phases[phaseIndex].duration;
+    }
   }
 
-  function animate(timestamp) {
-    if (!lastTime) lastTime = timestamp;
-    var delta = timestamp - lastTime;
-    lastTime = timestamp;
-    phaseElapsed += delta;
-
-    var phase = phases[currentPhase];
-    var progress = Math.min(phaseElapsed / phaseDuration, 1);
-    var scale = lerp(phase.scaleFrom, phase.scaleTo, easeInOut(progress));
-    circle.style.transform = 'scale(' + scale + ')';
-
-    var secsLeft = Math.ceil((phaseDuration - phaseElapsed) / 1000);
-    if (secsLeft < 1) secsLeft = 1;
-    if (secsLeft !== parseInt(countdown.textContent)) {
-      countdown.textContent = secsLeft;
-    }
-
-    if (phaseElapsed >= phaseDuration) {
-      setPhase((currentPhase + 1) % phases.length);
-    }
-
-    requestAnimationFrame(animate);
-  }
-
-  breathLabel.textContent = phases[0].label;
-  countdown.textContent = phases[0].seconds;
-  requestAnimationFrame(animate);
+  tick();
+  setInterval(tick, 1000);
 </script>
 
 </body>
